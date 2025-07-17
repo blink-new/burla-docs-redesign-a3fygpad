@@ -1,66 +1,23 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
 import { Input } from './components/ui/input'
 import { Badge } from './components/ui/badge'
 import { Separator } from './components/ui/separator'
 import { 
-  Code2, 
-  Zap, 
-  Globe, 
-  Shield, 
-  ArrowRight, 
   Copy, 
   Check,
-  Github,
-  Twitter,
-  Mail,
   ExternalLink,
-  Cpu,
-  Network,
-  Database,
-  Cloud,
   Terminal,
   BookOpen,
   Users,
-  Rocket
+  Rocket,
+  ArrowRight
 } from 'lucide-react'
 
 function App() {
   const [email, setEmail] = useState('')
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
-  const [animatedCounters, setAnimatedCounters] = useState({
-    nodes: 0,
-    tasks: 0,
-    uptime: 0
-  })
-
-  // Animated counters effect
-  useEffect(() => {
-    const targets = { nodes: 1000, tasks: 50000, uptime: 99.9 }
-    const duration = 2000
-    const steps = 60
-    const stepTime = duration / steps
-
-    let currentStep = 0
-    const timer = setInterval(() => {
-      currentStep++
-      const progress = currentStep / steps
-      const easeOut = 1 - Math.pow(1 - progress, 3)
-
-      setAnimatedCounters({
-        nodes: Math.floor(targets.nodes * easeOut),
-        tasks: Math.floor(targets.tasks * easeOut),
-        uptime: Math.min(targets.uptime, (targets.uptime * easeOut))
-      })
-
-      if (currentStep >= steps) {
-        clearInterval(timer)
-      }
-    }, stepTime)
-
-    return () => clearInterval(timer)
-  }, [])
 
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text)
@@ -68,107 +25,49 @@ function App() {
     setTimeout(() => setCopiedCode(null), 2000)
   }
 
-  const codeExamples = [
-    {
-      id: 'install',
-      title: 'Installation',
-      code: 'pip install burla',
-      language: 'bash'
-    },
-    {
-      id: 'basic',
-      title: 'Basic Usage',
-      code: `from burla import remote
-
-@remote
-def process_data(data):
-    # Your computation here
-    return result
-
-# Execute on distributed cluster
-result = process_data.remote(my_data)`,
-      language: 'python'
-    },
-    {
-      id: 'parallel',
-      title: 'Parallel Processing',
-      code: `# Process multiple items in parallel
-futures = [process_data.remote(item) for item in dataset]
-results = [f.get() for f in futures]`,
-      language: 'python'
-    }
-  ]
-
   const useCases = [
     {
-      icon: <Database className="h-8 w-8" />,
-      title: 'Data Processing',
-      description: 'Scale your data pipelines across thousands of nodes with automatic load balancing.',
-      features: ['ETL Pipelines', 'Real-time Analytics', 'Batch Processing']
+      title: 'Batch AI Inference',
+      image: 'https://docs.burla.dev/~gitbook/image?url=https%3A%2F%2F960315508-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FEZK1GDkJ4Bar9hojneh3%252Fuploads%252FAJiC7wUrKz1Ud4aMiTQm%252FScreenshot%25202025-07-13%2520at%25205.42.56%25E2%2580%25AFPM.png%3Falt%3Dmedia%26token%3D39c134b7-5b6e-4548-af00-e18c6c99f95d&width=245&dpr=4&quality=100&sign=aca7ce72&sv=2'
     },
     {
-      icon: <Cpu className="h-8 w-8" />,
-      title: 'Machine Learning',
-      description: 'Train models faster with distributed computing and automatic resource management.',
-      features: ['Model Training', 'Hyperparameter Tuning', 'Inference Scaling']
+      title: 'Data Pipelines',
+      image: 'https://docs.burla.dev/~gitbook/image?url=https%3A%2F%2F960315508-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FEZK1GDkJ4Bar9hojneh3%252Fuploads%252FZeav6O3IonCwJzWWQRbp%252FScreenshot%25202025-07-16%2520at%252011.41.14%25E2%2580%25AFAM.png%3Falt%3Dmedia%26token%3D23c04a6a-d939-482c-a286-e4792b431011&width=245&dpr=4&quality=100&sign=840cc465&sv=2'
     },
     {
-      icon: <Network className="h-8 w-8" />,
-      title: 'Web Scraping',
-      description: 'Scrape websites at scale with built-in proxy rotation and rate limiting.',
-      features: ['Proxy Management', 'Rate Limiting', 'Data Extraction']
+      title: 'Computational Bio',
+      image: 'https://docs.burla.dev/~gitbook/image?url=https%3A%2F%2F960315508-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FEZK1GDkJ4Bar9hojneh3%252Fuploads%252FZl52Sx7ZIsjqk9iqncwA%252FScreenshot%25202025-07-13%2520at%25205.42.46%25E2%2580%25AFPM.png%3Falt%3Dmedia%26token%3D5836b30e-4290-405e-97ff-53d0ae185b2b&width=245&dpr=4&quality=100&sign=29bcfba7&sv=2'
     },
     {
-      icon: <Cloud className="h-8 w-8" />,
-      title: 'Cloud Computing',
-      description: 'Deploy and scale applications across multiple cloud providers seamlessly.',
-      features: ['Auto Scaling', 'Multi-Cloud', 'Cost Optimization']
-    }
-  ]
-
-  const features = [
-    {
-      icon: <Zap className="h-6 w-6" />,
-      title: 'Lightning Fast',
-      description: 'Execute tasks with minimal latency across our global network'
+      title: 'Remote Dev Environments',
+      image: 'https://docs.burla.dev/~gitbook/image?url=https%3A%2F%2F960315508-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FEZK1GDkJ4Bar9hojneh3%252Fuploads%252Fuj49pk2lpCpsMAgrfH4f%252FScreenshot%25202025-07-16%2520at%252012.27.14%25E2%2580%25AFPM.png%3Falt%3Dmedia%26token%3D0be53ec8-afba-4135-b9bb-65f12de55e6d&width=245&dpr=4&quality=100&sign=2538201f&sv=2'
     },
     {
-      icon: <Shield className="h-6 w-6" />,
-      title: 'Secure by Default',
-      description: 'Enterprise-grade security with end-to-end encryption'
+      title: 'Data Prep',
+      image: 'https://docs.burla.dev/~gitbook/image?url=https%3A%2F%2F960315508-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FEZK1GDkJ4Bar9hojneh3%252Fuploads%252FiuuysmWTxxFvE52DqLzN%252FScreenshot%25202025-07-13%2520at%25205.40.15%25E2%2580%25AFPM.png%3Falt%3Dmedia%26token%3Dffe1f5fa-1455-44ca-bd35-00e6d1e5f360&width=245&dpr=4&quality=100&sign=98703957&sv=2'
     },
     {
-      icon: <Globe className="h-6 w-6" />,
-      title: 'Global Scale',
-      description: 'Access compute resources worldwide with automatic failover'
-    },
-    {
-      icon: <Code2 className="h-6 w-6" />,
-      title: 'Developer Friendly',
-      description: 'Simple Python API that scales from prototype to production'
+      title: 'Background Task Queue',
+      image: 'https://docs.burla.dev/~gitbook/image?url=https%3A%2F%2F960315508-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FEZK1GDkJ4Bar9hojneh3%252Fuploads%252F83Gu4mar8bGLS1ZlEBCs%252FScreenshot%25202025-07-16%2520at%252011.48.03%25E2%2580%25AFAM.png%3Falt%3Dmedia%26token%3Dc9e4493a-4e54-47f1-977e-5056e9ce34a9&width=245&dpr=4&quality=100&sign=939d6cc7&sv=2'
     }
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+      <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-green-500 rounded-lg flex items-center justify-center">
-                <Terminal className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-500 bg-clip-text text-transparent">
+              <span className="text-xl font-bold text-gray-900">
                 Burla
               </span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#docs" className="text-gray-600 hover:text-blue-600 transition-colors">Documentation</a>
-              <a href="#examples" className="text-gray-600 hover:text-blue-600 transition-colors">Examples</a>
-              <a href="#community" className="text-gray-600 hover:text-blue-600 transition-colors">Community</a>
+              <a href="#docs" className="text-gray-600 hover:text-gray-900 transition-colors">Documentation</a>
+              <a href="#examples" className="text-gray-600 hover:text-gray-900 transition-colors">Examples</a>
+              <a href="#community" className="text-gray-600 hover:text-gray-900 transition-colors">Community</a>
               <Button variant="outline" size="sm">
-                <Github className="h-4 w-4 mr-2" />
                 GitHub
               </Button>
             </div>
@@ -177,144 +76,40 @@ results = [f.get() for f in futures]`,
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/5 to-green-600/10" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <Badge variant="secondary" className="mb-6 px-4 py-2 text-sm font-medium">
-              <Rocket className="h-4 w-4 mr-2" />
-              Now in Public Beta
-            </Badge>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              Distributed Computing
-              <br />
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-500 bg-clip-text text-transparent">
-                Made Simple
-              </span>
+              Run any Python script on 1000 computers in 1 second.
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Scale your Python applications across thousands of nodes with just a single decorator. 
-              No infrastructure management, no complexity.
+            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
+              With any hardware, in any docker container, self-hosted in your cloud.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button size="lg" className="px-8 py-4 text-lg font-semibold">
-                Get Started
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="lg" className="px-8 py-4 text-lg">
-                <BookOpen className="mr-2 h-5 w-5" />
-                View Documentation
-              </Button>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">
-                  {animatedCounters.nodes.toLocaleString()}+
-                </div>
-                <div className="text-gray-600">Active Nodes</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 mb-2">
-                  {animatedCounters.tasks.toLocaleString()}+
-                </div>
-                <div className="text-gray-600">Tasks Executed</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600 mb-2">
-                  {animatedCounters.uptime.toFixed(1)}%
-                </div>
-                <div className="text-gray-600">Uptime</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Code Examples */}
-      <section id="examples" className="py-20 bg-white">
+      {/* One function, endless possibilities */}
+      <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Get Started in Minutes
+              One function, endless possibilities:
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Transform your existing Python code into a distributed application with minimal changes
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {codeExamples.map((example, index) => (
-              <Card key={example.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-blue-200">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-semibold">
-                      <span className="text-blue-600 mr-2">{index + 1}.</span>
-                      {example.title}
-                    </CardTitle>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => copyToClipboard(example.code, example.id)}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      {copiedCode === example.id ? (
-                        <Check className="h-4 w-4 text-green-600" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-100 font-mono leading-relaxed">
-                      <code>{example.code}</code>
-                    </pre>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Use Cases */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Built for Every Use Case
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              From data processing to machine learning, Burla scales with your needs
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {useCases.map((useCase, index) => (
-              <Card key={index} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-blue-200">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-green-100 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <div className="text-blue-600 group-hover:text-green-600 transition-colors">
-                      {useCase.icon}
-                    </div>
+              <Card key={index} className="group hover:shadow-lg transition-all duration-300 border border-gray-200">
+                <CardContent className="p-6">
+                  <div className="aspect-video bg-gray-100 rounded-lg mb-4 overflow-hidden">
+                    <img 
+                      src={useCase.image} 
+                      alt={useCase.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                  <CardTitle className="text-xl font-semibold mb-2">{useCase.title}</CardTitle>
-                  <CardDescription className="text-gray-600 leading-relaxed">
-                    {useCase.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {useCase.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center text-sm text-gray-600">
-                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-3" />
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 text-center">{useCase.title}</h3>
                 </CardContent>
               </Card>
             ))}
@@ -322,120 +117,137 @@ results = [f.get() for f in futures]`,
         </div>
       </section>
 
-      {/* Features */}
+      {/* How it works */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose Burla?
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+              How it works:
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Built with performance, security, and developer experience in mind
-            </p>
-          </div>
+            <div className="max-w-4xl mx-auto text-left">
+              <p className="text-lg text-gray-700 mb-6">
+                Burla is an open-source platform for orchestrating Python in the cloud.
+              </p>
+              <p className="text-lg text-gray-700 mb-8">
+                The package only has one function:
+              </p>
+              
+              <div className="bg-gray-900 rounded-lg p-6 mb-8 relative">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => copyToClipboard('from burla import remote_parallel_map\n\ndef my_function(my_input):\n    print("I\'m running on my own separate computer in the cloud!")\n    \nremote_parallel_map(my_function, [1, 2, 3])', 'main-code')}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white"
+                >
+                  {copiedCode === 'main-code' ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </Button>
+                <pre className="text-sm text-gray-100 font-mono leading-relaxed overflow-x-auto">
+                  <code>{`from burla import remote_parallel_map
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="text-center group">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-green-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <div className="text-blue-600 group-hover:text-green-600 transition-colors">
-                    {feature.icon}
-                  </div>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+def my_function(my_input):
+    print("I'm running on my own separate computer in the cloud!")
+    
+remote_parallel_map(my_function, [1, 2, 3])`}</code>
+                </pre>
               </div>
-            ))}
+
+              <p className="text-lg text-gray-700 mb-4">
+                With Burla, running code in the cloud feels the same as coding locally:
+              </p>
+              <ul className="text-lg text-gray-700 mb-8 space-y-2">
+                <li>• Anything you print appears your local terminal.</li>
+                <li>• Exceptions thrown in your code are thrown on your local machine.</li>
+                <li>• Responses are pretty quick, you can call a million simple functions in a couple seconds.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Deploy in two commands */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+              Deploy in two commands:
+            </h2>
+            <div className="max-w-4xl mx-auto text-left">
+              <p className="text-lg text-gray-700 mb-8">
+                Run <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono">pip install burla</code> then run <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono">burla install</code> and that's it! (Currently Google Cloud only!)
+              </p>
+              
+              <div className="text-center">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4">
+                  <BookOpen className="mr-2 h-5 w-5" />
+                  Getting Started
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Any Hardware, Any Container */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+              Any Hardware, Any Container:
+            </h2>
+            <div className="max-w-4xl mx-auto text-left">
+              <p className="text-lg text-gray-700 mb-4">
+                Run code in any Docker image with a public (or private) URI.
+              </p>
+              <p className="text-lg text-gray-700 mb-8">
+                Scale across 10,000 CPU's, 100 H100's, use terabytes of RAM, or all the above.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Newsletter Signup */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-green-500">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Stay Updated
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Stay up to date:
           </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Get the latest updates, tutorials, and best practices delivered to your inbox
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mt-8">
             <Input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-blue-100 focus:bg-white/20"
+              className="flex-1"
             />
-            <Button variant="secondary" size="lg" className="px-8 font-semibold">
-              Subscribe
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8">
+              Submit
             </Button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-white border-t border-gray-200 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-2 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-green-500 rounded-lg flex items-center justify-center">
-                  <Terminal className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-bold">Burla</span>
-              </div>
-              <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
-                Making distributed computing accessible to every developer. 
-                Scale your applications without the complexity.
-              </p>
-              <div className="flex space-x-4">
-                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                  <Github className="h-5 w-5" />
-                </Button>
-                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                  <Twitter className="h-5 w-5" />
-                </Button>
-                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                  <Mail className="h-5 w-5" />
-                </Button>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4">Documentation</h3>
-              <ul className="space-y-3 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Getting Started</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API Reference</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Examples</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Best Practices</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4">Community</h3>
-              <ul className="space-y-3 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors flex items-center">
-                  Discord <ExternalLink className="h-3 w-3 ml-1" />
-                </a></li>
-                <li><a href="#" className="hover:text-white transition-colors flex items-center">
-                  GitHub <ExternalLink className="h-3 w-3 ml-1" />
-                </a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Support</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-              </ul>
-            </div>
+          <div className="text-center">
+            <p className="text-gray-600 mb-4">
+              Questions?
+            </p>
+            <p className="text-gray-600">
+              Schedule a call, or email jake@burla.dev. We're always happy to talk.
+            </p>
           </div>
 
-          <Separator className="my-8 bg-gray-800" />
+          <Separator className="my-8 bg-gray-200" />
 
-          <div className="flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
-            <p>&copy; 2024 Burla. All rights reserved.</p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-white transition-colors">Status</a>
-            </div>
+          <div className="text-center text-gray-500 text-sm">
+            <p>Last updated 2 hours ago</p>
           </div>
         </div>
       </footer>
